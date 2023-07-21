@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do-List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+    
+        .container {
+            text-align: center;
+            margin-top: 20px;
+        }
+    
+        input {
+            padding: 8px;
+            margin-right: 10px;
+            flex-grow: 1;
+        }
+    
+        button {
+            padding: 8px 10px;
+        }
+    
+        .todo-list {
+            margin-top: 20px;
+        }
+    
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            padding: 5px;
+            max-width: 250px; /* Set a maximum width to keep it centered and prevent stretching */
+            margin-left: auto; /* Center the task items by using margin auto on left and right */
+            margin-right: auto;
+        }
+    
+        .cancel-button {
+            padding: 2px;
+            color: red;
+            cursor: pointer;
+        }
+    </style>
+    
+    
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>To-Do-List App</h1>
+        <div class="todo-list">
+            <div>
+                <input type="text" id="newTask" placeholder="Enter a new task">
+                <button id="addButton">Add</button>
+            </div>
+            <ul id="taskList"></ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskList = document.getElementById('taskList');
+            const newTaskInput = document.getElementById('newTask');
+            const addButton = document.getElementById('addButton');
+            let addBlankRow = false;
+
+            addButton.addEventListener('click', () => {
+                const newTask = newTaskInput.value.trim();
+               
+                
+                if (addBlankRow ||  newTask ==''){
+                    addTask('');
+
+                    addBlankRow=false;
+
+                }else if (newTask !== ''){
+                    addTask(newTask);
+                    newTaskInput.value = '';
+                    addBlankRow = true;
+                }
+
+                
+            });
+
+            function addTask(task) {
+                const taskItem = document.createElement('div');
+                taskItem.className = 'task-item';
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = task;
+                input.disabled = addBlankRow;
+
+                const cancelButton = document.createElement('button');
+                cancelButton.innerText = 'Cancel';
+                cancelButton.className = 'cancel-button';
+
+                cancelButton.addEventListener('click', () => {
+                    removeTask(taskItem);
+                });
+
+                input.addEventListener('input', () => {
+                    updateTask(taskList, input, task);
+                });
+
+                taskItem.appendChild(input);
+                taskItem.appendChild(cancelButton);
+
+                taskList.appendChild(taskItem);
+            }
+
+            function updateTask(taskList, input, task) {
+                const index = Array.from(taskList.children).indexOf(input.parentNode);
+                taskList.children[index].firstChild.value = input.value;
+            }
+
+            function removeTask(taskItem) {
+                taskList.removeChild(taskItem);
+            }
+        });
+    </script>
+</body>
+
+</html>
