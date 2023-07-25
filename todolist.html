@@ -97,7 +97,7 @@
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.value = task;
-                input.disabled = addBlankRow;
+                input.disabled = (addBlankRow || task =='');
 
                 const cancelButton = document.createElement('button');
                 cancelButton.innerText = 'Cancel';
